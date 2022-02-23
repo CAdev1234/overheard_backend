@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 
@@ -21,23 +22,24 @@ class PostManagementController extends Controller
     }
 
     public function getPostListData(Request $request){
+        $user = Auth::user();
         $data = array();
+
 
         $columns = array(
             0 => 'id',
             1 => 'content',
         );
-        $user_id = $request->input('user_id');
         $limit = $request->input('length');
         $start = $request->input('start');
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
         $totalData = DB::table('posts')
-            ->where('user_id', $user_id)
+            ->where('user_id', $user->id)
             ->count();
         $totalFiltered = $totalData;
-        $user = DB::table('users')->where('id', $user_id)->first();
+        $user = DB::table('users')->where('id', $user->id)->first();
         if(empty($request->input('search.value')))
         {
             $tableData = DB::table('posts')
@@ -45,7 +47,7 @@ class PostManagementController extends Controller
                     'posts.title', 'posts.content', 'posts.upvotes', 'posts.downvotes', 'posts.seen_count',
                     'posts.comments_count', 'posts.post_datetime', 'posts.id as post_id'
                 )
-                ->where('posts.user_id', '=', $user_id)
+                ->where('posts.user_id', '=', $user->id)
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
@@ -63,7 +65,7 @@ class PostManagementController extends Controller
                     'posts.title', 'posts.content', 'posts.upvotes', 'posts.downvotes', 'posts.seen_count',
                     'posts.comments_count', 'posts.post_datetime', 'posts.id as post_id'
                 )
-                ->where('posts.user_id', '=', $user_id)
+                ->where('posts.user_id', '=', $user->id)
                 ->where('content', 'LIKE', "%{$search}%")
                 ->offset($start)
                 ->limit($limit)

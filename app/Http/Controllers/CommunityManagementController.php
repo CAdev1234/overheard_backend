@@ -410,7 +410,7 @@ class CommunityManagementController extends Controller
                     'radius' => $radius,
                     'participants' => 0,
                     'ads_price' => $ads_price,
-                    'created_at' => date('Y-m-d')
+                    'created_at' => gmdate('Y-m-d')
                 ]);
             return response()->json([
                 'status' => true

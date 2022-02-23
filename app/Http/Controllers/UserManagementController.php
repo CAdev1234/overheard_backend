@@ -108,7 +108,7 @@ class UserManagementController extends Controller
     }
 
     public function activeManage(Request $request){
-        $user_id = $request->input('user_id');
+        $user_id = Auth::id();
         $isActive = DB::table('users')
             ->select('isActive')
             ->where('id', $user_id)

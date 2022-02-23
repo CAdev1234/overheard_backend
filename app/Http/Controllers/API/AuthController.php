@@ -247,27 +247,28 @@ class AuthController extends Controller
     //getuser
     public function getUser(Request $request)
     {
-        // $user = Auth::user();
-        // $sender = new ResponseController;
+        $auth = Auth::user();
+        $user = User::find($auth->email);
+        $sender = new ResponseController;
 
-        // if ($user) {
-        //     if($user->isActive == 0){
-        //         return response()->json([
-        //                 'status' => false,
-        //                 'message' => "You has been blocked"
-        //             ], 200);
-        //     }
-        //     $tokenResult = $user->createToken('token');
-        //     $token = $tokenResult->accessToken;
-        //     $success['status'] = true;
-        //     $success['user'] = $user;
-        //     $success['access_token'] = $token;
-        //     return $sender->sendResponse($success);
-        // } else {
-        //     $success['status'] = false;
-        //     $error = "user not found";
-        //     return $sender->sendResponse($error);
-        // }
+        if ($user) {
+            if($user->isActive == 0){
+                return response()->json([
+                        'status' => false,
+                        'message' => "You has been blocked"
+                    ], 200);
+            }
+            $tokenResult = $user->createToken('token');
+            $token = $tokenResult->accessToken;
+            $success['status'] = true;
+            $success['user'] = $user;
+            $success['access_token'] = $token;
+            return $sender->sendResponse($success);
+        } else {
+            $success['status'] = false;
+            $error = "user not found";
+            return $sender->sendResponse($error);
+        }
     }
 
     public function restoreUserPassword(Request $request)

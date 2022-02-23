@@ -11,7 +11,8 @@ class Community extends Model
     protected $fillable = [
         'id',
         'name',
-        'zip_code',
+        'lat',
+        'lng',
         'participants',
         'radius',
         'ads_price',

@@ -16,7 +16,8 @@ class CreateCommunitiesTable extends Migration
         Schema::create('communities', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('zip_code');
+            $table->double('lat');
+            $table->double('lng');
             $table->bigInteger('participants')->default(0);
             $table->decimal('radius', 20, 2);
             $table->decimal('ads_price', 20, 2);

@@ -22,7 +22,6 @@ class CommunityController extends Controller
     }
 
     public function getCommunities(Request $request){
-        // $user = Auth::user();
         $pageNum = $request->input('page');
         $pageCount = $request->input('pageCount');
         $searchKey = $request->input('searchKey');
@@ -64,7 +63,7 @@ class CommunityController extends Controller
         return response()->json([
             'status' => true,
             'communities' => $community_array,
-            // 'user' => $user
+            'user' => Auth::user()
         ], 200);
     }
 
@@ -81,24 +80,22 @@ class CommunityController extends Controller
 
     public function confirmCommunity(Request $request){
         try{
-            $user = User::find($request->userId);
             $community_id = $request->input('community_id');
-            if($user->community_id == null){
+            if(Auth::user()->community_id == null){
                 DB::table('communities')
                     ->where('id', $community_id)
                     ->update(['participants' => DB::raw('participants + 1')]);
             }
             else{
-                DB::table('communities')
-                    ->where('id', $user->community_id)
-                    ->update(['participants' => DB::raw('participants - 1')]);
+                // DB::table('communities')
+                //     ->where('id', $user->community_id)
+                //     ->update(['participants' => DB::raw('participants - 1')]);
 
                 DB::table('communities')
                     ->where('id', $community_id)
                     ->update(['participants' => DB::raw('participants + 1')]);
             }
-            $user->community_id = $community_id;
-            $user->save();
+            DB::table('users')->where('id', Auth::id())->update(['community_id' => $community_id]);
             return response()->json([
                 'status' => true
             ], 200);
@@ -111,13 +108,11 @@ class CommunityController extends Controller
     }
 
     public function submitCommunity(Request $request){
-
         $community_name = $request->input('community_name');
         $lat = $request->input('lat');
         $lng = $request->input('lng');
 
         try{
-            $user = Auth::user();
             $communities = DB::table('communities')->get();
             foreach ($communities as $community) {
                 $distance = $this->distance($community->lat, $community->lng, $lat, $lng);
@@ -130,7 +125,7 @@ class CommunityController extends Controller
                     ], 200);
                 }
             }
-            DB::table('communities')->insert([
+            $community_id = DB::table('communities')->insertGetId([
                 'name' => $community_name,
                 'lat' => doubleval($lat),
                 'lng' => doubleval($lng),
@@ -138,8 +133,9 @@ class CommunityController extends Controller
                 'radius' => 1000,
                 'ads_price' => 1,
                 'isApproved' => 0,
-                'created_at' => date('Y-m-d')
+                'created_at' => gmdate('Y-m-d')
             ]);
+            DB::table('users')->where('id', Auth::id())->update(['community_id' => $community_id]);
             return response()->json([
                 'status' => true,
                 'message' => 'Community submitted'

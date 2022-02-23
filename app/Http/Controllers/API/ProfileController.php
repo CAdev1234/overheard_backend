@@ -21,17 +21,16 @@ class ProfileController extends Controller
     public function uploadAvatar(Request $request){
         if($request->hasFile('file')){
             try{
-                // $user = Auth::user();
                 $file = $request->file('file');
                 $originalname = $file->getClientOriginalName();
                 $filename = Str::uuid().'_'.$originalname;
                 //$file->storeAs('public/avatars', $filename);
                 $file->move(public_path('/uploads/avatars/'), $filename);
                 $avatar_url = url('assets/uploads/avatars/'.$filename);
+                User::find(Auth::user()->getAuthIdentifier())->first()->update(['avatar' => $avatar_url]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Avatar Upload Complete',
-                    'path' => $avatar_url
                 ], 200);
             }
             catch (\Exception $e){
@@ -45,32 +44,11 @@ class ProfileController extends Controller
     }
 
     public function completeProfile(Request $request){
-        $id = $request->input('id');
-        $firstname  = $request->input('firstname');
-        $lastname = $request->input('lastname');
-        $username = $request->input('username');
-        $email = $request->input('email');
-        $phonenumber = $request->input('phonenumber');
-        $bio = $request->input('bio');
         $reporter_request = $request->input('reporter_request');
-        $avatar = $request->input('avatar');
-        
-        $user = User::find($id);
+        $update_data = $request->all();
+        unset($update_data["reporter_request"]);
+        if ($update_data["email"] === null || $update_data["email"] === Auth::user()->email) {unset($update_data["email"]);}
 
-        $user->firstname = $firstname;
-        $user->lastname = $lastname;
-        $user->bio = $bio;
-        if($username != null){
-            $user->name = $username;
-        }
-        if($email != null){
-            $user->email = $email;
-        }
-        if($phonenumber != null){
-            $user->phonenumber = $phonenumber;
-        }
-        $user->avatar = $avatar;
-        $user->updated_at = gmdate("Y-m-d H:i:s");
 
         if($reporter_request){
             try{
@@ -82,10 +60,11 @@ class ProfileController extends Controller
 
                 DB::table('verified_reporter')
                     ->updateOrInsert(
-                        ['user_id' => $user->id],
+                        ['user_id' => Auth::id()],
                         ['status' => 0]
                     );
-                $user->save();
+                // $user->save();
+                DB::table('users')->where('id', Auth::id())->update($update_data);
                 
             }
             catch (\Exception $e){
@@ -97,7 +76,8 @@ class ProfileController extends Controller
         }
         else{
             try{
-                $user->save();
+                // $user->save();
+                DB::table('users')->where('id', Auth::id())->update($update_data);
             }
             catch (\Exception $e){
                 return response()->json([
@@ -114,15 +94,11 @@ class ProfileController extends Controller
 
     public function getProfile(Request $request){
         $user = Auth::user();
-        $user_id = $request->input('user_id');
-        if($user_id == null){
-            $user_id = $user->id;
-        }
 
         try{
             $profile = DB::table('users')
                 ->select('name', 'firstname', 'lastname', 'avatar', 'bio', 'community_id', 'isActive', 'isVerified')
-                ->where('id', $user_id)
+                ->where('id', $user->id)
                 ->first();
 
             $community = DB::table('communities')
@@ -131,16 +107,16 @@ class ProfileController extends Controller
 
             $blocked = DB::table('blocked_profiles')
                 ->where('visitor_id', $user->id)
-                ->where('user_id', $user_id)
+                ->where('user_id', $user->id)
                 ->first();
 
             $following = DB::table('profile_followings')
                 ->where('follower_id', $user->id)
-                ->where('user_id', $user_id)
+                ->where('user_id', $user->id)
                 ->first();
 
             $feeds = DB::table('posts')
-                ->where('user_id', $user_id)
+                ->where('user_id', $user->id)
                 ->get()->count();
             $profile->community = $community;
             $profile->totalPost = $feeds;
@@ -150,7 +126,7 @@ class ProfileController extends Controller
             return response()->json([
                 'status' => true,
                 'profile' => $profile,
-                'user' => DB::table('users')->where('id', $user_id)->first(),
+                'user' => DB::table('users')->where('id', $user->id)->first(),
                 'viewer' => $user
             ], 200);
         }
@@ -167,20 +143,17 @@ class ProfileController extends Controller
     }
 
     public function getProfileFeeds(Request $request){
-        $user_id = $request->input('user_id');
-        $user = DB::table('users')
-            ->where('id', $user_id)
-            ->first();
+        $user = Auth::user();
         $pageNum = $request->input('page');
         $pageCount = $request->input('pageCount');
 
         if($pageCount == 0) {
             $feeds = DB::table('posts')
-            ->where('user_id', $user_id);
+            ->where('user_id', $user->id);
         }
         else {
             $feeds = DB::table('posts')
-            ->where('user_id', $user_id)
+            ->where('user_id', $user->id)
             ->paginate($pageCount, '*', 'page', $pageNum);
         }
 

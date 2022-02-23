@@ -144,10 +144,9 @@ class FeedController extends Controller
     }
 
     public function  getFeed(Request $request){
-        $userId = $request->input('userId');
         $feed_id = $request->input('feed_id');
         $filterOption = $request->input('filterOption');
-        $user = User::find($userId);
+        $user = Auth::user();
 
         $feed = DB::table('posts')
             ->where('id', $feed_id)
@@ -208,12 +207,12 @@ class FeedController extends Controller
     }
 
     public function reportFeed(Request $request){
-        $reporter = Auth::user();
+        $user_id = $request->user_id;
         $reported_feed_id = $request->input('feed_id');
         $reported_author_id = $request->input('reported_author_id');
         $report_reason = $request->input('reason');
         $report_content = $request->input('content');
-
+        $reporter = User::find($user_id);
         try{
             $check_double = DB::table('reports')
                 ->where('reporter_id', $reporter->id)
@@ -296,16 +295,14 @@ class FeedController extends Controller
     }
 
     public function postFeedContent(Request $request) {
-        $userId = $request->input('userId');
         $title = $request->input('title');
         $content = $request->input('content');
         $location = $request->input('location');
         $tags = $request->input('tags');
-        $user = User::find($userId);
         $feed_id = 0;
         try{
             $feed_id = DB::table('posts')->insertGetId([
-                'user_id' => $user->id,
+                'user_id' => Auth::id(),
                 'content' => $content,
                 'title' => $title,
                 'location' => $location,
@@ -344,7 +341,6 @@ class FeedController extends Controller
         $location = $request->input('location');
         $urls = $request->input('urls');
         $tags = $request->input('tags');
-        $user = Auth::user();
         try{
             $affected = DB::table('posts')
                 ->where('id', $feed_id)
@@ -443,46 +439,47 @@ class FeedController extends Controller
     public function postFeedMedia(Request $request){
         if($request->hasFile('file')){
             try{
-                $user = Auth::user();
                 $file = $request->file('file');
                 $feed_id = $request->input('id');
                 $originalname = $file->getClientOriginalName();
                 $filename = $originalname;
-                //$file->storeAs('public/post_media/'.$feed_id.'/', $filename);
+                // $file->storeAs('public/post_media/'.$feed_id.'/', $filename);
                 $file->move(public_path('/uploads/post_media/'.$feed_id.'/'), $filename);
                 $media_url = url('assets/uploads/post_media/'.$feed_id.'/'.$filename);
                 $ext = pathinfo($originalname, PATHINFO_EXTENSION);
 
-                $double_check = DB::table('post_attaches')
-                    ->where('post_id', $feed_id)
-                    ->where('filename', $filename)
-                    ->get()->count();
-                if($double_check == 0){
-                    if(mb_strtolower($ext) == 'mp4' || mb_strtolower($ext) == 'avi'){
-                        DB::table('post_attaches')->insert([
-                            'post_id' => $feed_id,
-                            'filename' => $filename,
-                            'url' => $media_url
-                        ]);
-                    }
-                    else{
-                        DB::table('post_attaches')->insert([
-                            'post_id' => $feed_id,
-                            'filename' => $filename,
-                            'url' => $media_url
-                        ]);
-                    }
-                    return response()->json([
-                        'status' => true,
-                        'message' => 'Media Upload Complete',
-                        'path' => $media_url
-                    ], 200);
+                // $double_check = DB::table('post_attaches')
+                //     ->where('post_id', $feed_id)
+                //     ->where('filename', $filename)
+                //     ->get()->count();
+                
+                if(mb_strtolower($ext) == 'mp4' || mb_strtolower($ext) == 'avi'){
+                    DB::table('post_attaches')->insert([
+                        'post_id' => $feed_id,
+                        'filename' => $filename,
+                        'url' => $media_url,
+                        'thumbnail' => $media_url
+                    ]);
+                }
+                else{
+                    DB::table('post_attaches')->insert([
+                        'post_id' => $feed_id,
+                        'filename' => $filename,
+                        'url' => $media_url,
+                        'thumbnail' => $media_url
+                    ]);
                 }
                 return response()->json([
                     'status' => true,
-                    'message' => 'You already Uploaded This file - '.$filename,
+                    'message' => 'Media Upload Complete',
                     'path' => $media_url
                 ], 200);
+
+                // return response()->json([
+                //     'status' => true,
+                //     'message' => 'You already Uploaded This file - '.$filename,
+                //     'path' => $media_url
+                // ], 200);
             }
             catch (\Exception $e){
                 return response()->json([
