@@ -119,15 +119,7 @@ class AuthController extends Controller
 
     public function firebaseSignIn(Request $request)
     {
-        try {
-            $auth = app('firebase.auth');
-            // $auth = Firebase::auth();    
-        } catch (\Throwable $th) {
-            return response()->json([
-                'message' => 'Firebase Auth is not launched correctly' . $th->getMessage()
-            ], 401);
-        }
-        
+        $auth = app('firebase.auth');
 
         $idTokenString = $request->input('Firebasetoken');
 
