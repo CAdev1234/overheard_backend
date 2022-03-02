@@ -62,6 +62,9 @@
                 margin-bottom: 30px;
             }
         </style>
+
+        <!-- socket client -->
+        <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
     </head>
     <body>
         <div class="flex-center position-ref full-height">
@@ -96,5 +99,14 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function initSocketClient() {
+                let ip_address = '192.168.1.15'
+                let socket_port = 3000
+                let socket = io(`${ip_address}:${socket_port}`)
+                socket.on('connection')
+            }
+        </script>
     </body>
 </html>

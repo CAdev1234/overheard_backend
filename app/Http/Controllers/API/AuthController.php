@@ -19,7 +19,7 @@ use Lcobucci\JWT\Token\Plain;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-
+use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class AuthController extends Controller
 {
@@ -94,7 +94,8 @@ class AuthController extends Controller
                     'email' => $request->email,
                     'name' => $request->name,
                     'firebaseUID' => $request->firebaseUID,
-                    'avatar' => $request->avatar
+                    'avatar' => $request->avatar,
+                    'authSource' => $request->authSource
                 ]);
                 $user->save();
                 return response()->json(['result' => true], 200);
@@ -103,6 +104,7 @@ class AuthController extends Controller
                 $user->name = $request->name;
                 $user->firebaseUID = $request->firebaseUID;
                 $user->avatar = $request->avatar;
+                $user->authSource = $request->authSource;
                 $user->save();
                 return response()->json(['result' => true], 200);
             }
@@ -117,8 +119,15 @@ class AuthController extends Controller
 
     public function firebaseSignIn(Request $request)
     {
-        // Launch Firebase Auth
-        $auth = app('firebase.auth');
+        try {
+            $auth = app('firebase.auth');
+            // $auth = Firebase::auth();    
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => 'Firebase Auth is not launched correctly' . $th->getMessage()
+            ], 401);
+        }
+        
 
         $idTokenString = $request->input('Firebasetoken');
 

@@ -7,7 +7,42 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
-## About Laravel
+# Overheard App Laravel Backend
+
+This project is developed as overheard app's backend using laravel and its packages.
+
+## Installation
+Please run following command.
+```bash
+git clone [url]
+cd [project_name]
+npm install
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan passport:install
+php artisan db:seed
+```
+Please copy Personal access client id and client secret and paste in env file.
+
+Next download firebase credentials from "Service Accounts" section of firebase console.
+
+Please run following cmd
+```bash
+php artisan serve
+```
+If you run on specific host and port, please run following cmd
+```bash
+php artisan serve --host=[host] --port=[port]
+```
+
+
+
+
+
+
+
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
