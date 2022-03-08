@@ -39,7 +39,6 @@ class CommunityController extends Controller
         $community_array = array();
         foreach ($communities as $community) {
             try{
-
                 $community_lat = $community->lat;
                 $community_lng = $community->lng;
                 $community_radius = $community->radius;
@@ -63,7 +62,8 @@ class CommunityController extends Controller
         return response()->json([
             'status' => true,
             'communities' => $community_array,
-            'user' => Auth::user()
+            'user' => Auth::user(),
+            'message' => 'Success'
         ], 200);
     }
 

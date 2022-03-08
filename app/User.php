@@ -2,11 +2,13 @@
 
 namespace App;
 
+use App\Mail\AuthVerifyMail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use App\Notifications\CustomPasswordReset;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -43,4 +45,9 @@ class User extends Authenticatable
     {
         $this->notify(new CustomPasswordReset($token));
     }*/
+
+    public function sendAuthVerificationEmail(string $receiver, string $id) {
+        $verificationLink = env('APP_URL').'/email/verify/'.$id;
+        Mail::to($receiver)->send(new AuthVerifyMail($verificationLink));
+    }
 }

@@ -40,9 +40,11 @@ class UserManagementController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        $totalData = DB::table('users')
-            ->where('isAdmin', 0)
-            ->count();
+        // $totalData = DB::table('users')
+        //     ->where('isAdmin', 0)
+        //     ->count();
+        
+        $totalData = DB::table('users')->count();
         $totalFiltered = $totalData;
 
         if(empty($request->input('search.value')))
@@ -51,7 +53,7 @@ class UserManagementController extends Controller
                 ->select(
                     'id', 'firstname', 'lastname', 'name', 'email', 'isActive'
                 )
-                ->where('isAdmin', 0)
+                // ->where('isAdmin', 0)
                 ->offset($start)
                 ->limit($limit)
                 ->orderBy($order,$dir)
@@ -63,7 +65,7 @@ class UserManagementController extends Controller
                 ->select(
                     'id', 'firstname', 'lastname', 'name', 'email', 'isActive', 'isAdmin'
                 )
-                ->where('isAdmin', 0)
+                // ->where('isAdmin', 0)
                 ->where(function ($query) use ($search){
                     $query->where('firstname', 'LIKE', "%{$search}%")
                         ->orWhere('lastname', 'LIKE', "%{$search}%")

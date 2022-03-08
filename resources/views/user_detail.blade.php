@@ -25,11 +25,11 @@
 					<div id="profile-container" class="card-body" user-id="{{$user->id}}">
 						<div class="row">
 							<div class="col-md-4 col-sm-12">
-								<div class="profile-picture">
+								<div class="profile-picture" style="width: 100%;height: 100%;aspect-ratio: 1;">
 									@if($user->avatar != null)
-										<img style="width: 100%; height: auto;" src="{{$user->avatar}}" alt="User Avatar" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" />
+										<img style="width: 100%; height: 100%;" src="{{$user->avatar}}" alt="User Avatar" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" />
 									@else
-										<img style="width: 100%; height: auto;" src="{{asset('assets/img/avatars/avatar.png')}}" alt="User Avatar" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" />
+										<img style="width: 100%; height: 100%;" src="{{asset('assets/img/avatars/avatar.png')}}" alt="User Avatar" class="rounded-circle" data-lock-picture="img/!logged-user.jpg" />
 									@endif
 								</div>
 							</div>

@@ -14,9 +14,9 @@ class VerificationController extends Controller
 	    $user = User::findOrFail($user_id);
 
 	    try{
-	    	if (!$user->hasVerifiedEmail()) {
-		        $user->markEmailAsVerified();
-		    }	
+	    	$user->updated_at = gmdate("Y-m-d H:i:s");
+			$user->email_verified_at = gmdate("Y-m-d H:i:s");
+			$user->save();
 		    return response()->json([
 		    	"status"=> true,
 		    	"message" => "Email Verified"
@@ -33,14 +33,14 @@ class VerificationController extends Controller
 
 	public function resend(Request $request) {
 		$user = User::where('email', '=', $request->email)->first();
-	    if ($user->hasVerifiedEmail()) {
+	    if ($user->email_verified_at != null) {
 	        return response()->json([
 	        	"status"=> true,
 	        	"message" => "Email already verified."
 	        ], 200);
 	    }
 
-	    $user->sendEmailVerificationNotification();
+		$user->sendAuthVerificationEmail($request->email, $user->id);
 
 	    return response()->json([
 	    	"status" => true,

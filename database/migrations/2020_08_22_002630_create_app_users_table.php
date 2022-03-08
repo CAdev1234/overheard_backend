@@ -25,6 +25,7 @@ class CreateAppUsersTable extends Migration
             $table->date('registered_date')->nullable();
             $table->integer('verified_reported')->default(0);
             $table->decimal('wallet_balance')->default(0);
+            $table->string('remember_token')->nullable();
             $table->integer('isBlocked')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ResponseController as ResponseController;
+use App\Mail\AuthVerifyMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\User;
@@ -19,6 +20,7 @@ use Lcobucci\JWT\Token\Plain;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Kreait\Laravel\Firebase\Facades\Firebase;
 
 class AuthController extends Controller
@@ -51,6 +53,7 @@ class AuthController extends Controller
                 ]);
                 $user->save();
                 // $user->sendEmailVerificationNotification();
+                // $user->sendAuthVerificationEmail($request->email, $user->id);
                 return response()->json(
                     [
                         'status' => true,
@@ -172,6 +175,7 @@ class AuthController extends Controller
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
+        
         if ($validator->fails()) {
             return response()->json([
                 'status' => false,
@@ -181,6 +185,9 @@ class AuthController extends Controller
 
         $credentials = request(['email', 'password']);
         $user = User::where('email', $request->email)->first();
+
+        // $user->sendAuthVerificationEmail($request->email, $user->id);
+
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
                 'status' => false,

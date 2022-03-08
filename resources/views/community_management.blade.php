@@ -4,12 +4,13 @@
 
 @section('specific page vendor css')
 	<!-- Specific Page Vendor CSS -->
+
 	<link rel="stylesheet" href="{{asset('assets/vendor/select2/css/select2.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/select2-bootstrap-theme/select2-bootstrap.min.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/datatables/media/css/dataTables.bootstrap4.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/bootstrap/css/bootstrap.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/animate/animate.css')}}">
-	<link rel="stylesheet" href="{{asset('assets/vendor/font-awesome/css/font-awesome.css')}}" />
+	{{-- <link rel="stylesheet" href="{{asset('assets/vendor/font-awesome/css/font-awesome.css')}}" /> --}}
 	<link rel="stylesheet" href="{{asset('assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/elusive-icons/css/elusive-icons.css')}}" />
 	<link rel="stylesheet" href="{{asset('assets/vendor/pnotify/pnotify.custom.css')}}" />

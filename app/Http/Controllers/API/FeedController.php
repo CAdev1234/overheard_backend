@@ -54,7 +54,7 @@ class FeedController extends Controller
             switch ($filterOption){
                 case 1:
                     $feeds = DB::table('posts')
-                        //->where('posts.content', 'LIKE', '%'.$searchKey.'%')
+                        ->where('posts.content', 'LIKE', '%'.$searchKey.'%')
                         ->whereIn('id', $feed_ids)
                         ->whereIn('user_id', $user_ids)
                         ->orderBy('id', 'desc')
@@ -62,7 +62,7 @@ class FeedController extends Controller
                     break;
                 case 2:
                     $feeds = DB::table('posts')
-                        //->where('posts.content', 'LIKE', '%'.$searchKey.'%')
+                        ->where('posts.content', 'LIKE', '%'.$searchKey.'%')
                         ->whereIn('id', $feed_ids)
                         ->whereIn('user_id', $user_ids)
                         ->orderBy('upvotes', 'desc')
@@ -70,7 +70,7 @@ class FeedController extends Controller
                     break;
                 case 3:
                     $feeds = DB::table('posts')
-                        //->where('posts.content', 'LIKE', '%'.$searchKey.'%')
+                        ->where('posts.content', 'LIKE', '%'.$searchKey.'%')
                         ->whereIn('id', $feed_ids)
                         ->whereIn('user_id', $user_ids)
                         ->orderBy('seen_count', 'desc')
@@ -78,7 +78,7 @@ class FeedController extends Controller
                     break;
                 default:
                     $feeds = DB::table('posts')
-                        //->where('posts.content', 'LIKE', '%'.$searchKey.'%')
+                        ->where('posts.content', 'LIKE', '%'.$searchKey.'%')
                         ->whereIn('id', $feed_ids)
                         ->whereIn('user_id', $user_ids)
                         ->orderBy('id', 'desc')

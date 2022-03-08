@@ -18,14 +18,19 @@
     <!-- Web Fonts  -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Vendor CSS -->
     <link rel="stylesheet" href="{{asset('assets/vendor/bootstrap/css/bootstrap.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/animate/animate.css')}}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor/font-awesome/css/font-awesome.css')}}" />
+    {{-- <link rel="stylesheet" href="{{asset('assets/vendor/font-awesome/css/font-awesome.css')}}" /> --}}
     <link rel="stylesheet" href="{{asset('assets/vendor/magnific-popup/magnific-popup.css')}}" />
     <link rel="stylesheet" href="{{asset('assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css')}}" />
+
+
+    
+
     <script src='https://kit.fontawesome.com/a076d05399.js'></script>
     @yield('specific page vendor css')
 
@@ -51,9 +56,9 @@
     <!-- start: header -->
     <header class="header">
         <div class="logo-container">
-            <a href="{{ url('/') }}" class="logo">
-                {{--<img src="{{asset('assets/img/logo.png')}}" width="200" height="100" alt="Porto Admin" />--}}
-                <h2 class="main-header-title">Overheard</h2>
+            <a href="{{ url('/') }}" class="logo" style="display: flex;flex-direction:row;padding-top:10px;align-items:center">
+                <img src="{{asset('assets/img/logo.png')}}" width="70" height="70" alt="Overheard Logo" style="margin-right: 10px" />
+                <h2 class="main-header-title" style="margin: 0;font-weight:bold">Overheard</h2>
             </a>
             <div class="d-md-none toggle-sidebar-left" data-toggle-class="sidebar-left-opened" data-target="html" data-fire-event="sidebar-left-opened">
                 <i class="fa fa-bars" aria-label="Toggle sidebar"></i>

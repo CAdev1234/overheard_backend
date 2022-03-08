@@ -21,13 +21,15 @@ class ProfileController extends Controller
     public function uploadAvatar(Request $request){
         if($request->hasFile('file')){
             try{
+                // $user = Auth::user();
                 $file = $request->file('file');
                 $originalname = $file->getClientOriginalName();
                 $filename = Str::uuid().'_'.$originalname;
-                //$file->storeAs('public/avatars', $filename);
                 $file->move(public_path('/uploads/avatars/'), $filename);
                 $avatar_url = url('assets/uploads/avatars/'.$filename);
-                User::find(Auth::user()->getAuthIdentifier())->first()->update(['avatar' => $avatar_url]);
+                // User::find(Auth::user()->getAuthIdentifier())->first()->update(['avatar' => $avatar_url]);
+
+                DB::table('users')->where('id', Auth::id())->update(['avatar' => $avatar_url]);
                 return response()->json([
                     'status' => true,
                     'message' => 'Avatar Upload Complete',
@@ -64,6 +66,7 @@ class ProfileController extends Controller
                         ['status' => 0]
                     );
                 // $user->save();
+                $update_data['isReporter'] = $reporter_request;
                 DB::table('users')->where('id', Auth::id())->update($update_data);
                 
             }
@@ -97,7 +100,7 @@ class ProfileController extends Controller
 
         try{
             $profile = DB::table('users')
-                ->select('name', 'firstname', 'lastname', 'avatar', 'bio', 'community_id', 'isActive', 'isVerified')
+                ->select('name', 'firstname', 'lastname', 'avatar', 'bio', 'community_id', 'isActive')
                 ->where('id', $user->id)
                 ->first();
 

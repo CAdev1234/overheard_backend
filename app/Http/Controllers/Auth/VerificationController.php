@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\VerifiesEmails;
 use App\User;
+use Illuminate\Support\Facades\Request;
 
 class VerificationController extends Controller
 {
@@ -65,19 +66,19 @@ class VerificationController extends Controller
         
     }
 
-    public function resend() {
-        if (auth()->user()->hasVerifiedEmail()) {
-            return response()->json([
-                "status"=> false,
-                "message" => "Email already verified."
-            ], 400);
-        }
+    // public function resend() {
+    //     if (auth()->user()->hasVerifiedEmail()) {
+    //         return response()->json([
+    //             "status"=> false,
+    //             "message" => "Email already verified."
+    //         ], 400);
+    //     }
 
-        auth()->user()->sendEmailVerificationNotification();
+    //     auth()->user()->sendEmailVerificationNotification();
 
-        return response()->json([
-            "status" => true,
-            "message" => "Email verification link sent on your email id"
-        ]);
-    }
+    //     return response()->json([
+    //         "status" => true,
+    //         "message" => "Email verification link sent on your email id"
+    //     ]);
+    // }
 }

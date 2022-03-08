@@ -24,6 +24,7 @@ class AppUser extends Authenticatable
         'registered_date',
         'verified_reported',
         'wallet_balance',
+        'remember_token',
         'isBlocked',
         'email_verified_at'
     ];

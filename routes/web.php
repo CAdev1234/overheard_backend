@@ -28,7 +28,9 @@ Route::get('terms', function(){
 })->name('terms');
 
 Route::get('about_us', function(){
-    return view('about_us');
+    return view('about_us')->with([
+        'testData' => "https://overheard.net"
+    ]);
 })->name('aboutus');
 
 Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
