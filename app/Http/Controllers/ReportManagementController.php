@@ -32,8 +32,7 @@ class ReportManagementController extends Controller
         $order = $columns[$request->input('order.0.column')];
         $dir = $request->input('order.0.dir');
 
-        $totalData = DB::table('reports')
-            ->count();
+        $totalData = DB::table('reports')->count();
         $totalFiltered = $totalData;
 
         if(empty($request->input('search.value')))

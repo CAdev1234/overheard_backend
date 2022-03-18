@@ -69,6 +69,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reportmanagement', 'ReportManagementController@index')->name('reportmanagement');
 
     Route::post('getReportListData', 'ReportManagementController@getReportListData')->name('reportlistdata');
+    
 
     Route::get('report_detail', 'ReportManagementController@getReportDetail')->name('reportdetail');
 

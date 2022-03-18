@@ -207,7 +207,7 @@ class FeedController extends Controller
     }
 
     public function reportFeed(Request $request){
-        $user_id = $request->user_id;
+        $user_id = Auth::user()->id;
         $reported_feed_id = $request->input('feed_id');
         $reported_author_id = $request->input('reported_author_id');
         $report_reason = $request->input('reason');
@@ -251,7 +251,8 @@ class FeedController extends Controller
     }
 
     public function commentFeed(Request $request){
-        $userId = $request->input('userId');
+        // $userId = $request->input('userId');
+        $userId = Auth::user()->id;
         $feed_id = $request->input('feed_id');
         $comment = $request->input('comment');
         $commenter = User::find($userId);
