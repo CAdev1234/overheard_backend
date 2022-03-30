@@ -21,13 +21,11 @@ class ProfileController extends Controller
     public function uploadAvatar(Request $request){
         if($request->hasFile('file')){
             try{
-                // $user = Auth::user();
                 $file = $request->file('file');
                 $originalname = $file->getClientOriginalName();
                 $filename = Str::uuid().'_'.$originalname;
-                $file->move(public_path('/uploads/avatars/'), $filename);
+                $file->move(public_path('assets\uploads\avatars'), $filename);
                 $avatar_url = url('assets/uploads/avatars/'.$filename);
-                // User::find(Auth::user()->getAuthIdentifier())->first()->update(['avatar' => $avatar_url]);
 
                 DB::table('users')->where('id', Auth::id())->update(['avatar' => $avatar_url]);
                 return response()->json([

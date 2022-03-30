@@ -445,7 +445,7 @@ class FeedController extends Controller
                 $originalname = $file->getClientOriginalName();
                 $filename = $originalname;
                 // $file->storeAs('public/post_media/'.$feed_id.'/', $filename);
-                $file->move(public_path('/uploads/post_media/'.$feed_id.'/'), $filename);
+                $file->move(public_path('assets\uploads\post_media/'.$feed_id.'/'), $filename);
                 $media_url = url('assets/uploads/post_media/'.$feed_id.'/'.$filename);
                 $ext = pathinfo($originalname, PATHINFO_EXTENSION);
 
