@@ -16,21 +16,21 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800|Shadows+Into+Light" rel="stylesheet" type="text/css">
 
     <!-- Vendor CSS -->
-    <link rel="stylesheet" href="{{asset('assets/vendor/bootstrap/css/bootstrap.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/vendor/animate/animate.css')}}">
+    <link rel="stylesheet" href="{{asset('public/assets/vendor/bootstrap/css/bootstrap.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/vendor/animate/animate.css')}}">
 
-    <link rel="stylesheet" href="{{asset('assets/vendor/font-awesome/css/font-awesome.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/vendor/magnific-popup/magnific-popup.css')}}" />
-    <link rel="stylesheet" href="{{asset('assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/vendor/font-awesome/css/font-awesome.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/vendor/magnific-popup/magnific-popup.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/vendor/bootstrap-datepicker/css/bootstrap-datepicker3.css')}}" />
 
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="{{asset('assets/css/theme.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/css/theme.css')}}" />
 
     <!-- Skin CSS -->
-    <link rel="stylesheet" href="{{asset('assets/css/skins/default.css')}}" />
+    <link rel="stylesheet" href="{{asset('public/assets/css/skins/default.css')}}" />
 
     <!-- Theme Custom CSS -->
-    <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
+    <link rel="stylesheet" href="{{asset('public/assets/css/custom.css')}}">
 
     <!-- Head Libs -->
     <script src="{{asset('assets/vendor/modernizr/modernizr.js')}}"></script>
