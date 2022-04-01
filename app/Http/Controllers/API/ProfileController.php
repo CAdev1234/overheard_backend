@@ -24,7 +24,7 @@ class ProfileController extends Controller
                 $file = $request->file('file');
                 $originalname = $file->getClientOriginalName();
                 $filename = Str::uuid().'_'.$originalname;
-                $file->move(public_path('assets\uploads\avatars'), $filename);
+                $file->move(public_path('assets/uploads/avatars'), $filename);
                 $avatar_url = url('assets/uploads/avatars/'.$filename);
 
                 DB::table('users')->where('id', Auth::id())->update(['avatar' => $avatar_url]);
